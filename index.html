@@ -1,273 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paris Applied Markets Lab (PAML)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* --- Base & Reset --- */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body { 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-      background: #fafafa; 
-      color: #1a1a1a; 
-      line-height: 1.65; 
-      -webkit-font-smoothing: antialiased;
-    }
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Dimension by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
 
-    /* --- Header --- */
-    header {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 80px 0;
-      margin-bottom: 0;
-    }
+		<!-- Wrapper -->
+			<div id="wrapper">
 
-    .header-content {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 40px;
-    }
+				<!-- Header -->
+					<header id="header">
+						<div class="content">
+							<div class="inner">
+								<h1>PARIS APPLIED MARKETS LAB</h1>
+								<p> Dedicated to market microstructure under real-world trading constraints.</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#researchphilosophy">Research Philosophy</a></li>
+								<li><a href="#work">Work</a></li>
+								<li><a href="#toolsandopensource">Tools & Open Source</a></li>
+								<li><a href="#contact">Contact</a></li>
+							</ul>
+						</nav>
+					</header>
 
-    .lab-acronym {
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: #666;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
+				<!-- Main -->
+					<div id="main">
 
-    h1 { 
-      font-size: 2.5rem; 
-      font-weight: 700; 
-      margin-bottom: 24px; 
-      color: #000;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
+						<!-- Research Philosophy -->
+							<article id="researchphilosophy">
+								<h2 class="major">Research Philosophy</h2>
+								<p>Beginning with established models, our methodology emphasizes identifying which theoretical assumptions hold in practice, which can be refined, and which must be discarded.<br><br> 
+								A core pillar of our work is the use of data-driven modeling methods of complex systems to uncover hidden dynamics that cannot be captured by closed-form theory alone.</p>
+							</article>
 
-    .tagline {
-      font-size: 1.15rem;
-      color: #4a4a4a;
-      line-height: 1.6;
-      max-width: 720px;
-      margin-bottom: 32px;
-    }
+						<!-- Work -->
+							<article id="work">
+								<h2 class="major">Work</h2>
+								<p>We currently focus on three areas:<br><br>
 
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+								(1) Matrix representation of market state<br><br>
+								Encoding order book and order-flow in a structured, efficient real-time use format.<br><br>
+								
+								(2) Short-term dynamics with DMD <br><br>
+								Applying Dynamic Mode Decomposition to identify instantaneous microstructure regimes.<br><br>
 
-    /* --- Main Content --- */
-    main {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 80px 40px;
-    }
+								(3) Memory of past dynamics with Hopfield Networks<br><br>
+								Storing and retrieving historical regimes to quickly recognize recurring microstructure patterns.<br><br>
+								</p>
+							</article>
 
-    section {
-      margin-bottom: 80px;
-    }
+						<!-- Tools & Open Source -->
+							<article id="toolsandopensource">
+								<h2 class="major">Tools & Open Source</h2>
+								<p>We develop open-source tools for market simulation under realistic conditions.<br><br> 
+								All repositories are publicly available to encourage reproducibility and collaboration within the research community.
+								</p>
+								<ul class="icons">
+									<li><a href="https://github.com/ParisAppliedMarketsLab" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</article>
+						
+						<!-- Contact -->
+							<article id="contact">
+								<h2 class="major">Contact</h2>
+								<p>We welcome contributions, suggestions, and inquiries from researchers, practitioners, and anyone with interest in market microstructure or algorithmic trading.<br><br> 
+								</p>
+								<ul class="icons">
+									<li><a href="mailto:favolithomas@gmail.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+									  
+								</ul>
+							</article>
 
-    h2 { 
-      font-size: 1.5rem; 
-      font-weight: 700; 
-      margin-bottom: 24px; 
-      color: #000;
-      letter-spacing: -0.01em;
-    }
+		
+					</div>
 
-    p { 
-      margin-bottom: 18px; 
-      font-size: 1rem;
-      color: #333;
-      line-height: 1.7;
-    }
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; Founded and directed by Thomas Favoli. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+					</footer>
 
-    p strong {
-      font-weight: 600;
-      color: #1a1a1a;
-    }
+			</div>
 
-    p em {
-      font-style: italic;
-      color: #2a2a2a;
-    }
+		<!-- BG -->
+			<div id="bg"></div>
 
-    /* --- Lists --- */
-    ul {
-      margin: 24px 0;
-      padding-left: 0;
-      list-style: none;
-    }
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
 
-    ul li {
-      position: relative;
-      padding-left: 28px;
-      margin-bottom: 14px;
-      font-size: 1rem;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    ul li:before {
-      content: "•";
-      position: absolute;
-      left: 8px;
-      color: #666;
-      font-weight: 600;
-    }
-
-    /* --- Buttons --- */
-    .button {
-      display: inline-block;
-      padding: 11px 24px;
-      font-weight: 500;
-      font-size: 0.95rem;
-      background: #000;
-      color: #fff;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      border: 1px solid #000;
-    }
-
-    .button:hover { 
-      background: #1a1a1a;
-      transform: translateY(-1px);
-    }
-
-    .button-secondary {
-      background: #fff;
-      color: #000;
-      border: 1px solid #d1d1d1;
-    }
-
-    .button-secondary:hover {
-      background: #f5f5f5;
-      border-color: #b1b1b1;
-    }
-
-    /* --- Divider --- */
-    .section-divider {
-      height: 1px;
-      background: #e5e5e5;
-      margin: 60px 0;
-    }
-
-    /* --- Footer --- */
-    footer { 
-      background: #ffffff;
-      border-top: 1px solid #e5e5e5;
-      padding: 50px 40px;
-      margin-top: 0;
-    }
-
-    .footer-content {
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .footer-text {
-      font-size: 0.9rem; 
-      color: #666;
-      margin-bottom: 12px;
-    }
-
-    footer a { 
-      color: #1a1a1a; 
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    footer a:hover { 
-      color: #000;
-      text-decoration: underline;
-    }
-
-    /* --- Links --- */
-    a { 
-      color: #1a73e8; 
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    section a:hover { 
-      color: #1557b0;
-    }
-
-    /* --- Responsive --- */
-    @media (max-width: 768px) {
-      header { padding: 60px 0; }
-      .header-content, main, .footer-content { padding-left: 24px; padding-right: 24px; }
-      h1 { font-size: 2rem; }
-      .tagline { font-size: 1.05rem; }
-      main { padding: 60px 24px; }
-      section { margin-bottom: 60px; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Header -->
-  <header>
-    <div class="header-content">
-      <h1>Paris Applied Markets Lab</h1>
-      <p class="tagline">
-        An independent research laboratory studying market microstructure and algorithmic trading under real trading constraints. We bridge theoretical models with real-world systems through rigorous experimental research.
-      </p>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main>
-    
-    <!-- About Section -->
-    <section id="about">
-      <h2>Research Philosophy</h2>
-      <p>
-        PAML conducts rigorous experimental research in market microstructure and algorithmic trading. Beginning with established models, we examine their behavior under real trading constraints including latency, queue priority, transaction costs and adverse selection.
-      </p>
-      <p>
-        Our methodology emphasizes identifying which theoretical assumptions hold in practice, which can be refined, and which must be discarded. All research outputs are documented with full transparency and grounded in live and historical order-book data.
-      </p>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Tools Section -->
-    <section id="tools">
-      <h2>Tools & Open Source</h2>
-      <p>
-        We develop open-source tools for market simulation, strategy testing, and execution evaluation under realistic conditions. All repositories are publicly available to encourage reproducibility and collaboration within the research community.
-      </p>
-      <p>
-        We welcome contributions, suggestions, and inquiries from researchers, practitioners, and anyone with interest in market microstructure or applied algorithmic trading.
-      </p>
-         </section>
-
-    <div class="section-divider"></div>
-
-    <div class="header-actions">
-        <a href="mailto:favolithomas@gmail.com" class="button">Contact</a>
-        <a href="https://github.com/ParisAppliedMarketsLab" class="button button-secondary">GitHub</a>
-      </div>
-
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <p class="footer-text">Founded and directed by Thomas Favoli</p>
-      <p class="footer-text">Paris, France ·</p>
-    </div>
-  </footer>
-
-</body>
+	</body>
 </html>

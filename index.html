@@ -34,8 +34,15 @@
 <body>
 
     <header>
-        <div id="header-placeholder"></div>
-        
+        <nav>
+            <a href="./index.html">Home</a>
+
+            <div>
+                <a href="./research_tools.html">Research & Tools</a>
+                <a href="./resources.html">Resources</a>  
+            </div>
+        </nav>
+                
     </header>
 
     <main>
@@ -94,25 +101,6 @@
         <p>Founded and directed by Thomas Favoli.</p>
     </footer>
 
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const placeholder = document.getElementById('header-placeholder');
-            fetch('./header.html')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    placeholder.innerHTML = data;
-                })
-                .catch(error => {
-                    console.warn('Header not loaded (./header.html missing).', error);
-                });
-        });
-    </script>
 
 </body>
 

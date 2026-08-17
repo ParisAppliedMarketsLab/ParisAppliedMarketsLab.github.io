@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research & Tools</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+
+    <header>
+        <div id="header-placeholder"></div>
+        
+    </header>
+
+    <main>
+        <h1>Research & Tools</h1>
+        <hr class="black-line">
+        
+
+
+
+            </main>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const placeholder = document.getElementById('header-placeholder');
+            fetch('./header.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    placeholder.innerHTML = data;
+                })
+                .catch(error => {
+                    console.warn('Header not loaded (./header.html missing).', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>

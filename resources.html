@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>resources</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+
+    <header>
+        <div id="header-placeholder"></div>
+        
+    </header>
+
+    <main>
+        <h1>Resources</h1>
+        <hr class="black-line">
+        <p>Strictly curated list. Every resource here is orders of magnitude ahead of the rest.</p>
+
+        <h2>Computer Science</h2>
+
+        <p><a href="https://web.mit.edu/6.001/6.037/sicp.pdf">Structure and Interpretation of Computer Programs.</a> We doubt that a better programming book will ever be written.</p>
+
+        <p><a href="https://csapp.cs.cmu.edu">Computer Systems: A Programmer's Perspective.</a> Low-level understanding of how programs run on real machines.</p>
+            
+        <p><a href="https://missing.csail.mit.edu">The Missing Semester of Your CS Education.</a> Critical topics about the computing ecosystem and how to use tools to solve complex problems faster.</p>
+        
+        <h2>Mathematics</h2>
+
+        <h2>Financial Markets</h2>
+
+        <p><a href="https://www.amazon.com/Trades-Quotes-Prices-Financial-Microscope/dp/110715605X/ref=sr_1_1?crid=16O8XAO26WS3Z&dib=eyJ2IjoiMSJ9.yJuPryKB4j9AwKNZ2d5uBdq3qYGVyPvHJPAIQjQSRFc.LLl8hQLekYX4n47PZDkssLEJtKcya76zdhqhz9nJtDM&dib_tag=se&keywords=Trades%2C+Quotes+and+Prices%3A+Financial+Markets+Under+the+Microscope&nsdOptOutParam=true&qid=1786782339&sprefix=trades%2C+quotes+and+prices+financial+markets+under+the+microscope%2Caps%2C241&sr=8-1">Trades, Quotes and Prices: Financial Markets Under the Microscope.</a> The title captures it best.</p>
+
+
+
+        </main>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const placeholder = document.getElementById('header-placeholder');
+            fetch('./header.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    placeholder.innerHTML = data;
+                })
+                .catch(error => {
+                    console.warn('Header not loaded (./header.html missing).', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>

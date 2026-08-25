@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +40,7 @@
             <div>
                 <a href="./research_tools.html">Research & Tools</a>
                 <a href="./resources.html">Resources</a>  
-            </div>
+            </p>
         </nav>
                 
     </header>
@@ -53,25 +53,19 @@
 
         <p>While economic theory sees prices as the market equilibrium between supply and demand, market microstructure theory sees price changes as a function of order flows.</p>
 
-        <div class="math-block">
-            $$R_t = f({O}_t) \quad \text{where} \quad R_t = \ln\left(\frac{P_t}{P_{t-1}}\right)$$
-        </div>
+        <p>$$R_t = f({O}_t) \quad \text{where} \quad R_t = \ln\left(\frac{P_t}{P_{t-1}}\right)$$</p>
 
         <p>Even game theory, as the study of decision-making between independent players, fits into this framework. In plain English, prices move because people trade, and people trade for different reasons.</p>
 
         <p>Some will think of $f$ as some sort of price impact model, and we agree (even though a distribution rather than a point estimate would be more useful for trading purposes). But we prefer to think of $f$ as an abstract function with a parameterization $\theta$, where the overall order flow ${O}_t$ is itself a function of a general market context $c$.</p>
 
-        <div class="math-block">
-            $$R_t = f_{\theta}({O}_t) \quad \text{where} \quad {O}_t = h({c}_t)$$
-        </div>
+        <p>$$R_t = f_{\theta}({O}_t) \quad \text{where} \quad {O}_t = h({c}_t)$$</p>
 
         <p>By $c$, we mean anything that helps explain why an order flow is the way it is. $h$ is how agents react and trade based on $c$.</p>
 
         <p>To be more precise, ${O}_t$ is the aggregation of the order flows from all $n$ agents, each of whom reacts differently to a given context. Formally, we define this as a vector of individual flows:</p>
 
-        <div class="math-block">
-            $${O}_t = ({o}_{1t}, {o}_{2t}, \dots, {o}_{nt}) \quad \text{where} \quad {o}_{it} = {h}_{i}({c}_t) \quad \text{for } i = 1, \dots, n$$
-        </div>
+        <p>$${O}_t = ({o}_{1t}, {o}_{2t}, \dots, {o}_{nt}) \quad \text{where} \quad {o}_{it} = {h}_{i}({c}_t) \quad \text{for } i = 1, \dots, n$$</p>
 
         <p>If ${o}^{\text{obs}}_{it} \neq {h}_{i}({c}_t)$, we see it as a lack of information in ${c}_t$, not a lack of complexity in ${h}_{i}$.</p>
 

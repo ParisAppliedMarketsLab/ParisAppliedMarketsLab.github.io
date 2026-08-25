@@ -126,6 +126,16 @@ h3 {
   line-height: 1;
 }
 
+h4 {
+  font-style: italic;
+  font-weight: 400;
+  margin: 2rem 0 1.4rem 0;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+
+
 /* ============================================
    TYPOGRAPHY – BODY & LISTS
    ============================================ */
@@ -362,6 +372,7 @@ h2 > code,
 h3 > code {
   font-size: 0.8em;
 }
+h4 > code,
 
 .marginnote > code,
 .sidenote > code {

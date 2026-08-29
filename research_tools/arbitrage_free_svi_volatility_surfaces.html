@@ -426,6 +426,14 @@
 
 <p>While raw SVI is exceptionally good at fitting market data, parameters tend to be unstable.</p>
 
+<div class="grid">
+    <img src="./ssvi/plot/svi_a_plot.png" alt="Raw SVI - Varying a">
+    <img src="./ssvi/plot/svi_b_plot.png" alt="Raw SVI - Varying b">
+    <img src="./ssvi/plot/svi_rho_plot.png" alt="Raw SVI - Varying rho">
+    <img src="./ssvi/plot/svi_m_plot.png" alt="Raw SVI - Varying m">
+    <img src="./ssvi/plot/svi_sigma_plot.png" alt="Raw SVI - Varying sigma">
+</div>
+
 <h3>7.4. The SVI Jump-Wings (SVI-JW) Parameterization</h3>
 
 <p>To address the calibration instability of the raw parameters, we introduce the SVI-JW formulation. Instead of using parameters like $a, b, \rho, m, \sigma$, we re-parameterize the slice in terms of quantities observed at-the-money.</p>
@@ -470,7 +478,7 @@
 
 <p>$\quad\quad$  $\sigma = \alpha m$</p>
 
-<p>If $m = 0$, then the formulae above for $b\ \rho$  and $a$ still hold, but $\sigma = (v_t.t - a)/b$.</p>
+<p>If $m = 0$, then the formula above for $b\ \rho$  and $a$ still hold, but $\sigma = (v_t.t - a)/b$.</p>
 
 <h3>7.5. Surface SVI (SSVI):</h3>
 
@@ -607,11 +615,14 @@
 <p>$$w(k, \theta_t) = w(k, \theta_{t_n}) + (\theta_t - \theta_{t_n})$$</p>
 
 <p>which remains free of static arbitrage provided the last slice itself is free of butterfly arbitrage.</p>
+
 <h2>8. Algorithms</h2>
 
 <h3>8.1. Surface calibration</h3>
 
 <p>For $i = 1, \dots, N$ (data points) we have the implied volatility $\sigma_{BS}(k_i, t_i)$, the corresponding log-moneyness $k_i$ and maturity $t_i$.</p>
+
+<p>[3] provides a fast and robust algorithm for extracting implied volatility from option prices.</p>
 
 <p>1. For $i = 1, \dots, N$ compute the total implied variance: $w^{\text{mkt}}_i(k_i, t_i) = \sigma^2_{BS}(k_i, t_i) \cdot t_i$</p>
 
@@ -619,7 +630,7 @@
 
 <p>3. For $i = 1, \dots, T$ (unique maturities), obtain the at-the-money (ATM) total variance: $\theta_i = w^{\text{mkt}}(k = 0, \tau_i)$.</p>
 
-<p>If $k = 0$ is not directly observed, use linear interpolation of $w^{\text{mkt}}(k, t = t_i)$ with respect to $k$.</p>
+<p>If $k = 0$ is not directly observed, use linear interpolation of $w^{\text{mkt}}(k, t = \tau_i)$ with respect to $k$.</p>
 
 <p>4. For $i = 1, \dots, N$ we define: $\theta^{\text{expanded}}_i = \theta_x$, where $x$ is the index in the unique maturity set such that $\tau_x = t_i$.</p>
 
@@ -627,7 +638,7 @@
 
 <p>5. $\min_{\rho, \eta, \gamma} \sum_{i=1}^N \left( w_i^{\text{mkt}} - w^{\text{model}}(k_i, \theta^{\text{expanded}}_i, \rho, \eta, \gamma) \right)^2 + \lambda \cdot \max\left(0, \; \eta(1 + |\rho|) - 2\right)^2$</p>
 
-<p>The quadratic penalty term (with $\lambda = 10^8$) enforces the no-arbitrage feasibility condition: $\eta \, (1 + |\rho|) \leq 2$. This penalty is zero when the condition is satisfied and strictly positive otherwise.</p>
+<p>The quadratic penalty term (with $\lambda = 10^8$) enforces the no-arbitrage condition: $\eta \, (1 + |\rho|) \leq 2$. This penalty is zero when the condition is satisfied and strictly positive otherwise.</p>
 
 <p>$$w^{\text{model}}(k; \theta, \rho, \eta, \gamma) = \frac{\theta}{2} \left(1 + \rho \, \varphi(\theta) \, k + \sqrt{(\varphi(\theta) \, k + \rho)^2 + (1 - \rho^2)} \right)$$</p>
 
@@ -639,13 +650,11 @@
 
 <p>6. For $i = 1, \dots, T$, we derive the initial jump-wing parameters:</p>
 
-<p>$\quad\quad$ $\phi_t = \frac{\eta}{\theta_t^\gamma \, (1 + \theta_t)^{1 - \gamma}}$</p>
-
 <p>$\quad\quad$ $v_t = \frac{\theta_t}{\tau_t}$</p>
 
-<p>$\quad\quad$ $\psi_t = \frac{1}{2} \, \rho \, \sqrt{\theta_t} \, \phi_t$</p>
+<p>$\quad\quad$ $\psi_t = \frac{1}{2} \, \rho \, \sqrt{\theta_t} \, \varphi(\theta_t)$</p>
 
-<p>$\quad\quad$ $p_t = \frac{1}{2} \, \sqrt{\theta_t} \, \phi_t \, (1 - \rho)$</p>
+<p>$\quad\quad$ $p_t = \frac{1}{2} \, \sqrt{\theta_t} \, \varphi(\theta_t) \, (1 - \rho)$</p>
 
 <p>We may guarantee a smile with no butterfly arbitrage by choosing:</p>
 
@@ -655,25 +664,29 @@
 
 <p>To ensure stable parameter evolution across maturities, we can fit independent cubic smoothing splines to each parameter.</p>
 
-<h3>8.2. Surface reconstruction (per slice)</h3>
+<h3>8.2. Surface reconstruction (slice by slice)</h3>
 
-<p>For any maturity $\tau_t$ and a grid of log-moneyness points $\{k_j\}$:</p>
+<p>For each maturity $\tau_t$ in $\{\tau_1, \tau_2, \dots, \tau_T\}$:</p>
 
-<p>1. Apply the closed-form mapping from jump-wing to raw parameters: $(a_t, \, b_t, \, m_t, \, \rho_t, \, \sigma_t)$.</p>
+<p>$\quad\quad$ 1. Apply the closed-form mapping from jump-wing $(v_t, \psi_t, p_t, c_t, \tilde{v_t})$ to raw parameters $(a_t, \, b_t, \, m_t, \, \rho_t, \, \sigma_t)$.</p>
 
-<p>2. Compute the model total variance at each moneyness point:</p>
+<p>$\quad\quad$ 2. For each moneyness point $k_j$ in $\{k_1, k_2, \dots, k_K\}$ compute the model total variance:</p>
 
 <p>$$w^{\text{model}}(k_j, \tau_t) = a_t + b_t \left( \rho_t (k_j - m_t) + \sqrt{(k_j - m_t)^2 + \sigma_t^2} \right)$$</p>
 
-<p>3. Convert total variance back to implied volatility:</p>
+<p>$\quad\quad$ 3. For each moneyness point $k_j$ convert total variance back to implied volatility:</p>
 
-<p>$$\sigma_{model}(k_j, \tau_t) = \sqrt{ \frac{w^{\text{model}}(k_j, \tau_t)}{\tau_t} }$$</p>
+<p>$$\sigma_{model}(k_j, \tau_t) = \sqrt{ \frac{w^{\text{model}}(k_j, \tau_t)}{\tau_t}}$$</p>
+
+<p>Aggregate all the slices to obtain the full surface.</p>
 
 <h2>9. References</h2>
 
 <p><a href="https://www.amazon.com/Volatility-Surface-Practitioners-Guide/dp/0471792519/ref=sr_1_1?crid=QMA1ZCMU9XES&dib=eyJ2IjoiMSJ9.nsn6ERlRtNzH0kAJRh0ISdX2wqyHkPNvCSXSdj4-Jw9XC7pqDyJYzMWkmsZn_KdruMIbH_ZZ95lN2zIe359295a_RY5Z3Y_j0ihaaoS83madCgbpt46FnB36hlb5g18pFvLXlSjywTD_2hpXnNvE3g.NI7yKtAa155bh8CAXzDCCOAppIqb6ggyI84r8bcDGuw&dib_tag=se&keywords=volatility+surface+practitioner&qid=1787678454&sprefix=volatiltiy+surface+practionner%2Caps%2C226&sr=8-1">[1] Gatheral, J. (2006), "The Volatility Surface: A Practitioner's Guide".</a></p>
 
 <p><a href="https://arxiv.org/abs/1204.0646">[2] Gatheral, J. and Jacquier, A. (2012), "Arbitrage-free SVI volatility surfaces".</a></p>
+
+<p><a href="http://www.jaeckel.org/LetsBeRational.pdf">[3] Jäckel, P. (2016). "Let's Be Rational".</a></p>
 
 </main>
 

@@ -93,11 +93,11 @@
 
 <p>In this framework, the future volatility for any given price level is known in advance. Although these two approaches seem philosophically opposed, they are intimately linked: for any stochastic volatility model, there exists a local volatility function that perfectly reproduces the exact same set of European vanilla option prices.</p>
 
-<p>The local variance can be interpreted as the risk-neutral expectation of the instantaneous variance, conditional on the final stock price $S_T$ being equal to the strike price $K$:</p>
+<p>To relate these two approaches explicitly, the local variance can be interpreted as the risk-neutral expectation of the instantaneous variance, conditional on the final stock price $S_T$ being equal to the strike price $K$:</p>
 
 <p>$$\sigma^2(K,T,S_0) = \mathbb{E}[v_T \mid S_T = K]$$</p>
 
-<p>Let $C(K, T, S_0)$ be the price of a European call option (strike of $K$, expiring at $T$ and current asset price of $S_0$).</p>
+<p>Let $C(K, T, S_0)$ be the price of a European call option (strike of $K$, expiring at $T$ and current asset price of $S_0$):</p>
 
 <p>$$C(K, T, S_0) = \int_{K}^{\infty} dS_T\ \varphi(S_T, T, S_0) \left(S_T - K \right)$$</p>
 
@@ -183,9 +183,9 @@
 
 <p>We observe two limiting behaviors:</p> 
 
-<p>$\quad\quad$  As $T \to 0$, the ATM implied variance converges to the current instantaneous variance $v$.</p>
+<p style="padding-left: 2em">As $T \to 0$, the ATM implied variance converges to the current instantaneous variance $v$.</p>
 
-<p>$\quad\quad$  As $T \to \infty$, it reverts to the long-term level $\bar{v}^{'}$.</p>
+<p style="padding-left: 2em">As $T \to \infty$, it reverts to the long-term level $\bar{v}^{'}$.</p>
 
 <h3>3.3. Skew</h3>
 
@@ -199,9 +199,9 @@
 
 <p>This produces two important limits:</p>
 
-<p>$\quad\quad$  As $T \to 0$, the skew tends to $ \frac{\rho\ \eta}{2}$.</p>
+<p style="padding-left: 2em">As $T \to 0$, the skew tends to $ \frac{\rho\ \eta}{2}$.</p>
 
-<p>$\quad\quad$  As $T \to \infty$, the skew decays proportionally to $1 / T$, specifically $\frac{\rho\ \eta}{\lambda^{'} T}$.</p>
+<p style="padding-left: 2em">As $T \to \infty$, the skew decays proportionally to $1 / T$, specifically $\frac{\rho\ \eta}{\lambda^{'} T}$.</p>
 
 <P>The skew is independent of the level of instantaneous variance $v$ or long-term mean variance $\bar{v}$. As we increase either the correlation $\rho$ or the volatility of volatility $\eta$, the skew increases. 
 
@@ -328,9 +328,9 @@
 
 <p>$$\frac{\partial v_{BS}}{\partial k}\big|_{k=0} = \rho\ b(\sigma) - 2\ \mu_J \quad \text{as } t \to 0$$</p>
 
-<p>$\quad\quad$  Stochastic vol without jumps : $\frac{\partial I}{\partial k}\big|_{k=0} \mapsto - \frac{\rho\ b(\sigma)}{2 \sigma}$.</p>
+<p style="padding-left: 2em">Stochastic vol without jumps : $\frac{\partial v_{BS}}{\partial k}\big|_{k=0} \mapsto - \frac{\rho\ b(\sigma)}{2 \sigma}$.</p>
 
-<p>$\quad\quad$  Deterministic vol with jumps: $\frac{\partial I}{\partial k}\big|_{k=0} \mapsto - \frac{\mu_J}{\sigma}$.</p>
+<p style="padding-left: 2em">Deterministic vol with jumps: $\frac{\partial v_{BS}}{\partial k}\big|_{k=0} \mapsto - \frac{\mu_J}{\sigma}$.</p>
 
 <h2>6. The SVJ Model</h2>
 
@@ -346,7 +346,7 @@
 
 <p>where $dq$ is a Poisson process with intensity $\lambda_j$.</p>
 
-<p>One limitation of the SVJ model is that after the stock price jumps, volatility stays unchanged (the jump is uncorrelated with the volatility process). In practice, we know that large moves in the underlying are almost always accompanied by a spike in implied volatility, a phenomenon known as volatility feedback</p>
+<p>One limitation of the SVJ model is that after the stock price jumps, volatility stays unchanged (the jump is uncorrelated with the volatility process). In practice, we know that large moves in the underlying are almost always accompanied by a spike in implied volatility, a phenomenon known as volatility feedback.</p>
 
 <p>To capture this, we could introduce the SVJJ model (Simultaneous Jumps in Stock Price and Volatility), where a jump in the stock is accompanied by an instantaneous upward jump in variance: $v \rightarrow v + \gamma_v$.</p> 
 
@@ -374,7 +374,7 @@
 
 <h3>7.2. Butterfly Arbitrage</h3>
 
-<p>The second rule ensures the existence of a non-negative risk-neutral probability density function $p$ for the future stock price.</p>
+<p>The second rule ensures the existence of a non-negative risk-neutral probability density function $p$ for the future stock price, corresponding to call prices being decreasing and convex functions of the strike.</p>
 
 <p>For a fixed maturity, the density is obtained by differentiating the call price twice with respect to the strike.</p> 
 
@@ -384,7 +384,7 @@
 
 <p>$$C_{BS}(k, w(k)) = S \left[ N(d_{+}(k)) - e^{k} N(d_{-}(k)) \right]$$</p>
 
-<p>where:</p>
+<p>where $N$ is the Gaussian cdf and :</p>
 
 <p>$$d_{\pm}(k) = -\frac{k}{\sqrt{w(k)}} \pm \frac{\sqrt{w(k)}}{2}$$</p>
 
@@ -394,17 +394,17 @@
 
 <p>$$g(k) = \left(1 - \frac{k w'(k)}{2 w(k)}\right)^2 - \frac{w'(k)^2}{4} \left(\frac{1}{w(k)} + \frac{1}{4}\right) + \frac{w''(k)}{2}$$</p>
 
-<p>A single volatility slice (i.e., $k \mapsto w(k, t)$ for a fixed $t$) is free of butterfly arbitrage if and only if</p> 
+<p>A single volatility slice (i.e., $k \mapsto w(k, t)$ for a fixed $t$) is free of butterfly arbitrage if and only if:</p> 
 
 <p>$$g(k) \geq 0 \quad \text{for all } k \in \mathbb{R}$$</p>
 
-<p>A surface if free of butterfly arbitrage if and only if all the slices are free of butterfly arbitrage.</p>
+<p>A surface is free of butterfly arbitrage if and only if all the slices are free of butterfly arbitrage.</p>
 
 <h3>7.3. The Raw SVI Parameterization</h3>
 
 <p>What is important to note is that the surface can be thought as a collection of slices. The raw SVI model provides a flexible, closed-form expression for the total implied variance of a single slice.</p> 
 
-<p>The function $k \mapsto w(k, \chi_R)$ is parameterized as:</p>
+<p>The convex function $k \mapsto w(k, \chi_R)$ is parameterized as:</p>
 
 <p>$$w(k, \chi_R) = a + b \left( \rho\ (k - m) + \sqrt{(k - m)^2 + \sigma^2} \right)$$</p>
 
@@ -412,19 +412,15 @@
 
 <p>Each parameter has an intuitive impact on the shape of the smile:</p>
 
-<p>$\quad\quad$  Increasing $a \in \mathbb{R}$ increases the general level of variance, a vertical translation of the smile.</p>
+<p style="padding-left: 2em">Increasing $a \in \mathbb{R}$ increases the general level of variance, a vertical translation of the smile.</p>
 
-<p>$\quad\quad$  Increasing $b \geq 0$ increases the slopes of both the put and call wings, tightening the smile.</p>
+<p style="padding-left: 2em">Increasing $b \geq 0$ increases the slopes of both the put and call wings, tightening the smile.</p>
 
-<p>$\quad\quad$  Increasing $\rho \in (-1, 1)$ decreases (increases) the slope of the left (right) wing, a counter-clockwise rotation of the smile. If $\rho = 1$, the smile is strictly increasing; if $\rho = -1$, it is strictly decreasing.</p>
+<p style="padding-left: 2em">Increasing $\rho \in (-1, 1)$ decreases (increases) the slope of the left (right) wing, a counter-clockwise rotation of the smile. If $\rho = 1$, the smile is strictly increasing; if $\rho = -1$, it is strictly decreasing.</p>
 
-<p>$\quad\quad$  Increasing $m \in \mathbb{R}$ translates the smile to the right.</p>
+<p style="padding-left: 2em">Increasing $m \in \mathbb{R}$ translates the smile to the right.</p>
 
-<p>$\quad\quad$  Increasing $\sigma > 0$ reduces the at-the-money (ATM) curvature of the smile. If $\sigma = 0$, the smile becomes perfectly linear.</p>
-
-<p>The condition $a + b\ \sigma\ \sqrt{1 - \rho^2} \geq 0$ ensures non-negative variance, $w(k, \chi_R) \geq 0$ for all $k \in \mathbb{R}$.</p>
-
-<p>While raw SVI is exceptionally good at fitting market data, parameters tend to be unstable.</p>
+<p style="padding-left: 2em">Increasing $\sigma > 0$ reduces the at-the-money (ATM) curvature of the smile. If $\sigma = 0$, the smile becomes perfectly linear. Because $\sigma$ sits inside the square root, it primarily affects the local curvature around $k ≈ m$ without changing the far-wing slopes.</p>
 
 <div class="grid">
     <img src="./ssvi/plot/svi_a_plot.png" alt="Raw SVI - Varying a">
@@ -434,23 +430,41 @@
     <img src="./ssvi/plot/svi_sigma_plot.png" alt="Raw SVI - Varying sigma">
 </div>
 
+<p>In equity smiles, $m$ is often close to (but not exactly) $0$, because the true minimum of total variance is not always exactly ATM once skew is present:</p>
+
+<p>$$k_{min} = m - \frac{\rho\ \sigma}{\sqrt{1 - \rho^2}}$$</p>
+
+<p>The condition $w(k_{min}, \chi_R) = a + b\ \sigma\ \sqrt{1 - \rho^2} \geq 0$ ensures non-negative variance, $w(k, \chi_R) \geq 0$ for all $k \in \mathbb{R}$.</p>
+
+<p>$w(k, \chi_R)$ is linear in the log-strike $k$ as $|k| \mapsto \infty$ which matches the empirically observed behavior of many equity smiles and aligns with the broader no-arbitrage intuition that wings cannot grow arbitrarily fast.</p>
+
+<p>$$w(k, \chi_R) \approx \begin{cases} a + b\ (1 + \rho)\ (k - m), \quad k \mapsto + \infty \\ a + b\ (1 - \rho)\ (k - m), \quad k \mapsto - \infty \end{cases}$$</p>
+
+<p>While raw SVI is exceptionally good at fitting market data, parameters tend to be unstable. This stems from the inherent non-uniqueness of the parameterization, where distinct sets of parameters yield the same slice:</p>
+
+<p style="padding-left: 2em">$a, b, \text{ and } \sigma$ push the smile level near its minimum</p>
+<p style="padding-left: 2em">$m \text{ and } \rho$ both influence where the minimum occurs in $k$</p>  
+<p style="padding-left: 2em">$b \text{ and } \rho$ jointly determine each wing slope.</p>
+
+<p>Their strong interdependencies allow one parameter to compensate for another, resulting in unstable, hopping estimates across calibrations.</p>
+
 <h3>7.4. The SVI Jump-Wings (SVI-JW) Parameterization</h3>
 
 <p>To address the calibration instability of the raw parameters, we introduce the SVI-JW formulation. Instead of using parameters like $a, b, \rho, m, \sigma$, we re-parameterize the slice in terms of quantities observed at-the-money.</p>
 
-<p>Note that this parameterization has an explicit dependence on the time to expiration $t$, and hence can be viewed as generalizing the raw (expiration-independent) SVI parameterization.</p> 
+<p>Note that this parameterization (of implied variance $v$ rather than  implied total variance $w$) has an explicit dependence on the time to expiration $t$, and hence can be viewed as generalizing the raw (expiration-independent) SVI parameterization.</p> 
     
-<p>With $w_t = v_t t$ we define :</p>
+<p>With $w_t = v_t \cdot t$ we define :</p>
 
-<p>$\quad\quad$  $v_t = \frac{a\ +\ b\ (-\rho\ m + \sqrt{m^2 + \sigma^2})}{t}$ gives the ATM variance.</p>
+<p style="padding-left: 2em">$v_t = \frac{a\ +\ b\ (-\rho\ m + \sqrt{m^2 + \sigma^2})}{t}$ gives the ATM variance.</p>
 
-<p>$\quad\quad$  $\psi_t = \frac{1}{\sqrt{w_t}} \frac{b}{2} \left( -\frac{m}{\sqrt{m^2 + \sigma^2}} + \rho \right)$  gives the ATM skew.</p>
+<p style="padding-left: 2em">$\psi_t = \frac{1}{\sqrt{w_t}} \frac{b}{2} \left( -\frac{m}{\sqrt{m^2 + \sigma^2}} + \rho \right)$ gives the ATM skew (in volatility terms).</p>
 
-<p>$\quad\quad$  $p_t = \frac{1}{\sqrt{w_t}} b\ (1 - \rho)$ gives the slope of the left (put) wing.</p>
+<p style="padding-left: 2em">$p_t = \frac{1}{\sqrt{w_t}} b\ (1 - \rho)$ gives the slope of the left (put) wing (tail steepness).</p>
 
-<p>$\quad\quad$  $c_t = \frac{1}{\sqrt{w_t}} b\ (1 + \rho)$ gives the slope of the right (call) wing.</p>
+<p style="padding-left: 2em">$c_t = \frac{1}{\sqrt{w_t}} b\ (1 + \rho)$ gives the slope of the right (call) wing (tail steepness).</p>
 
-<p>$\quad\quad$  $\tilde{v_t} = \frac{1}{t} (a + b\ \sigma \sqrt{1 - \rho^2})$ is the minimum implied variance.</p>
+<p style="padding-left: 2em">$\tilde{v_t} = \frac{1}{t} (a + b\ \sigma \sqrt{1 - \rho^2})$ is the minimum implied variance (usefull as a curvature or "smile depth" proxy).</p>
 
 <p>If smiles scaled perfectly as $1/\sqrt{w_t}$ (as is approximately the case empirically), these parameters would be constant, independent of the slice $t$. This makes it easy to extrapolate the SVI surface to expirations beyond the longest expiration in the data set.</p>
 
@@ -464,19 +478,19 @@
 
 <p>If we assume $m \neq 0$, we can transform back to raw SVI parameters using the inverse relationships:</p>
 
-<p>$\quad\quad$  $\beta = \rho - \frac{2 \psi_t \sqrt{w_t}}{b}$ (where $\beta \in [-1,1]$)</p>
+<p style="padding-left: 2em">$\beta = \rho - \frac{2 \psi_t \sqrt{w_t}}{b}$ (where $\beta \in [-1,1]$)</p>
 
-<p>$\quad\quad$  $\alpha = \text{sign}(\beta) \sqrt{\frac{1}{\beta^2} - 1}$</p>
+<p style="padding-left: 2em">$\alpha = \text{sign}(\beta) \sqrt{\frac{1}{\beta^2} - 1}$</p>
 
-<p>$\quad\quad$  $b = \frac{\sqrt{w_t}}{2} (c_t + p_t)$</p>
+<p style="padding-left: 2em">$b = \frac{\sqrt{w_t}}{2} (c_t + p_t)$</p>
 
-<p>$\quad\quad$  $\rho = 1 - \frac{p_t \sqrt{w_t}}{b}$</p>
+<p style="padding-left: 2em">$\rho = 1 - \frac{p_t \sqrt{w_t}}{b}$</p>
 
-<p>$\quad\quad$  $a = \tilde{v_t} t - b \sigma \sqrt{1 - \rho^2}$</p>
+<p style="padding-left: 2em">$a = \tilde{v_t} t - b \sigma \sqrt{1 - \rho^2}$</p>
 
-<p>$\quad\quad$  $m = \frac{(v_t - \tilde{v_t})t}{b \left( - \rho + \text{sign}(\alpha) \sqrt{1 + \alpha^2} - \alpha \sqrt{1 - \rho{2}} \right)}$</p>
+<p style="padding-left: 2em">$m = \frac{(v_t - \tilde{v_t})t}{b \left( - \rho + \text{sign}(\alpha) \sqrt{1 + \alpha^2} - \alpha \sqrt{1 - \rho{2}} \right)}$</p>
 
-<p>$\quad\quad$  $\sigma = \alpha m$</p>
+<p style="padding-left: 2em">$\sigma = \alpha m$</p>
 
 <p>If $m = 0$, then the formula above for $b\ \rho$  and $a$ still hold, but $\sigma = (v_t.t - a)/b$.</p>
 
@@ -492,33 +506,41 @@
 
 <p>where:</p>
 
-<p>$\quad\quad$  $\theta_t = \sigma^2_{BS}(0, t) t$ is the at-the-money total implied variance.</p>
+<p style="padding-left: 2em">$\theta_t = \sigma^2_{BS}(0, t) t$ is the at-the-money total implied variance.</p>
 
-<p>$\quad\quad$  $\rho$ is the correlation parameter (the same as in the raw SVI).</p>
+<p style="padding-left: 2em">$\rho$ is the correlation parameter (the same as in the raw SVI).</p>
 
 <p>In the SVI-JW parameterization, the SSVI surface yields the following intuitive definitions:</p>
 
-<p>$\quad\quad$  $v_t = \frac{\theta_t}{t}$</p>
+<p style="padding-left: 2em">$v_t = \frac{\theta_t}{t}$</p>
 
-<p>$\quad\quad$  $\psi_t = \frac{1}{2}\ \rho \sqrt{\theta_t} \varphi(\theta_t)$</p>
+<p style="padding-left: 2em">$\psi_t = \frac{1}{2}\ \rho \sqrt{\theta_t} \varphi(\theta_t)$</p>
 
-<p>$\quad\quad$  $p_t = \frac{1}{2}\ \sqrt{\theta_t} \varphi(\theta_t) (1 - \rho)$</p>
+<p style="padding-left: 2em">$p_t = \frac{1}{2}\ \sqrt{\theta_t} \varphi(\theta_t) (1 - \rho)$</p>
 
-<p>$\quad\quad$  $c_t = \frac{1}{2}\ \sqrt{\theta_t} \varphi(\theta_t) (1 + \rho)$</p>
+<p style="padding-left: 2em">$c_t = \frac{1}{2}\ \sqrt{\theta_t} \varphi(\theta_t) (1 + \rho)$</p>
 
-<p>$\quad\quad$  $\tilde{v_t} = \frac{\theta_t}{t}(1 - \rho^2)$</p>
+<p style="padding-left: 2em">$\tilde{v_t} = \frac{\theta_t}{t}(1 - \rho^2)$</p>
 
-<p>we may guarantee a smile with no butterfly arbitrage by choosing</p>
+<p>We may guarantee a smile with no butterfly arbitrage by choosing:</p>
 
-<p>$\quad\quad$  $c_t^{'} = p_t + 2 \psi_t$</p>
+<p style="padding-left: 2em">$c_t^{'} = p_t + 2 \psi_t$</p>
 
-<p>$\quad\quad$  $\tilde{v_t}^{'} = v_t\ \frac{4\ p_t c_t^{'}}{(p_t + c_t^{'})^2}$</p>
+<p style="padding-left: 2em">$\tilde{v_t}^{'} = v_t\ \frac{4\ p_t c_t^{'}}{(p_t + c_t^{'})^2}$</p>
 
 <p>The ATM volatility skew is given by</p>
 
 <p>$$\partial_{k}\sigma_{BS}(k, t)\big|_{k=0} = \frac{1}{2\sqrt{\theta_t t}}\partial_{k}w(k, \theta_t)\big|_{k=0} = \frac{\rho \sqrt{\theta_t}}{2\sqrt{t}}\varphi(\theta_t)$$</p>
 
-<p>Notice that the smile is symmetric (i.e., $\psi_t = 0$) around at-the-money if and only if $\rho = 0$. This aligns perfectly with stochastic volatility theory: the skew is driven entirely by the correlation between the underlying price and its volatility.</p>
+<p>Notice that the smile is symmetric (i.e., $\psi_t = 0$) around at-the-money if and only if $\rho = 0$. This aligns perfectly with stochastic volatility theory: the skew is driven by the correlation between the underlying price and its volatility.</p>
+
+<p>Since $\theta_0 = 0$, we have at time $t = 0$:</p>
+
+<p>$$w(k,\theta_0) = \frac{1}{2} \phi_0 (\rho k + |k|) \text{ for any } k \in \mathbb{R}$$</p>
+
+<p>where $\phi_0 = lim_{\theta \mapsto 0} \theta \varphi(\theta)$.</p>
+
+<p>$\phi_0 = 0$ is characteristic of stochastic volatility models (as in Heston-Like Parameterization). $\phi_0 > 0$ (as in Power-Law Parameterization) gives a V-shaped time zero smile which is characteristic of models with jumps and in particular, characteristic of empirically observed volatility surfaces. </p>
 
 <h4>7.5.1. No-Arbitrage Conditions for SSVI</h4>
 
@@ -526,23 +548,33 @@
 
 <p>No Calendar Spread Arbitrage requires:</p>
 
-<p>$\quad\quad$  $\partial_t \theta_t \geq 0$ for all $t>0$.</p>
+<p style="padding-left: 2em">$\partial_t \theta_t \geq 0$ for all $t>0$.</p>
 
-<p>$\quad\quad$  $0 \leq \partial_\theta (\theta \varphi(\theta)) \leq \frac{1}{\rho^2} (1 + \sqrt{1 - \rho^2}) \varphi(\theta)$ for all $\theta>0$.</p>
+<p style="padding-left: 2em">$0 \leq \partial_\theta (\theta \varphi(\theta)) \leq \frac{1}{\rho^2} (1 + \sqrt{1 - \rho^2}) \varphi(\theta)$ for all $\theta>0$.</p>
 
 <p>This  implies that the SSVI surface is free of calendar spread arbitrage if the skew in total variance terms is monotonically increasing in trading time and the skew in implied variance terms is monotonically decreasing in trading time.</p>
 
+<p>Since the definition of calendar spread arbitrage does not depend on the log-moneyness $k$, there is no loss of generality in assuming $k$ fixed. Note that $\partial_t w(k, \theta_t) = \partial_{\theta}w(k, \theta_t) \partial_t \theta_t$ so the SSVI volatility surface is free of calendar spread arbitrage if $\partial_{\theta}w(k, \theta) \geq 0$ for all $\theta > 0$, which is guaranteed by the second condition.</p>
+
+<p>These conditions also ensure the SSVI volatility surface matches the term structure of ATM volatility and the term structure of the ATM volatility skew.</p>
+
 <p>No Butterfly Arbitrage requires:</p>
 
-<p>$\quad\quad$  $\theta \varphi(\theta)(1 + |\rho|) < 4$ for all $\theta>0$.</p>
+<p style="padding-left: 2em">$\theta \varphi(\theta)(1 + |\rho|) < 4$ for all $\theta>0$.</p>
 
-<p>$\quad\quad$  $\theta \varphi(\theta)^2(1 + |\rho|) \leq 4$ for all $\theta>0$.</p>
+<p style="padding-left: 2em">$\theta \varphi(\theta)^2(1 + |\rho|) \leq 4$ for all $\theta>0$.</p>
+
+<p>These conditions ensure that the $g(k)$ function is positive for the SSVI surface.</p>
+
+<p>By re-expressing these conditions in terms of SVI-JW parameters, the surface is free of butterfly arbitrage if:</p>
+
+<p>$$\sqrt{v_t t} \max (p_t, c_t) < 2 \text{, and } (p_t + c_t) \max (p_t + c_t) \leq 2 \text{ for all } t > 0.</2>$$</p>
 
 <h4>7.5.2. Choosing the Function $\varphi(\theta)$</h4>
 
 <p>To satisfy all these conditions, we need a specific form for $\varphi$. Two popular choices are:</p>
 
-<h4>Heston-Like Parameterization</h4>
+<h4>a. Heston-Like Parameterization</h4>
 
 <p>$$\varphi(\theta) = \frac{1}{\lambda \theta} \left(1 - \frac{1 - e^{-\lambda \theta}}{\lambda \theta}\right)$$</p>
 
@@ -556,29 +588,33 @@
 
 <p>$$\frac{\partial_{\theta}(\theta \varphi(\theta))}{\varphi(\theta)} = \frac{1 - (1 + \lambda \theta)e^{-\lambda \theta}}{e^{- \lambda \theta} + \lambda \theta - 1}$$</p>
 
-<p>For any $\lambda > 0$, the map $\theta \mapsto \partial_{\theta}(\theta \varphi(\theta))/\varphi(\theta)$ is strictly decreasing on $(0,\infty)$ with limit as $\theta$ tends to zero equal to one. Since the quantity $(1 + \sqrt{1 - \rho^2})/\rho^2$ is greater than one for $\rho \in [-1, 1]$. This is consistent with the variance skew observed in the Heston model.</p>
+<p>For any $\lambda > 0$, the map $\theta \mapsto \partial_{\theta}(\theta \varphi(\theta))/\varphi(\theta)$ is strictly decreasing on $(0,\infty)$ with limit as $\theta$ tends to zero equal to one.</p>    
 
-<p>we note that</p> 
+<p>Since the quantity $(1 + \sqrt{1 - \rho^2})/\rho^2$ is greater than one for $\rho \in [-1, 1]$ the no calendar spread arbitrage conditions are satisfied. This is consistent with the variance skew observed in the Heston model.</p>
+
+<p>We note that</p> 
 
 <p>$$\text{lim}_{\theta \mapsto \infty} \theta \varphi(\theta) (1 + |\rho|) = \frac{1 + |\rho|}{\lambda}$$</p>
 
 <p>There the first condition for no butterfly arbitrage imposes $\lambda \geq (1 + |\rho|)/4$.</p>
 
-<h4>Power-Law Parameterization</h4> 
+<h4>b. Power-Law Parameterization</h4> 
 
-<p>$$\varphi(\theta) = \eta \theta^{-\gamma}$$</p>
+<p>$$\varphi(\theta) = \eta\ \theta^{-\gamma}$$</p>
 
-<p>with $\eta > 0$ and $0 < \gamma < 1$. Then $\partial_{\theta}(\theta \varphi{\theta}) / \varphi{\theta} = 1 - \gamma \in (0,1)$ which guarantees no calendar spread arbitrage immediately. If we set $\gamma = 1/2$, the SVI-JW parameters $\psi_t, p_t,$ and $c_t$ become constant and independent of the time to expiration $t$.</p> 
+<p>with $\eta > 0$ and $0 < \gamma < 1$.</p>
+    
+<p>Then $\partial_{\theta}(\theta \varphi(\theta)) / \varphi(\theta) = 1 - \gamma \in (0,1)$ which guarantees no calendar spread arbitrage immediately. If we set $\gamma = 1/2$, the SVI-JW parameters $\psi_t, p_t,$ and $c_t$ become constant and independent of the time to expiration $t$.</p> 
 
-<p>The ATM volatility skew is given by</p> 
+<p>The ATM volatility skew is given by:</p> 
 
-<p>$$\partial_{k}\sigma_{BS}(k,t)\big|_{k=0} = \frac{\rho \eta}{2 \sqrt{t}}$$</p>
+<p>$$\partial_{k}\sigma_{BS}(k,t)\big|_{k=0} = \frac{\rho\ \eta}{2 \sqrt{t}}$$</p>
 
-<p>The behavior for large $\theta$ can be easily modified so as to ensure that the entire surface is free of static arbitrage. For example, the choice</p>
+<p>The behavior for large $\theta$ can be easily modified so as to ensure that the entire surface is free of static arbitrage. For example, the choice:</p>
 
 <p>$$\varphi(\theta) = \frac{\eta}{\theta^{\gamma} (1+\theta)^{1 - \gamma}}$$</p>
 
-<p>gives a surface that is completely free of static arbitrage provided that $\eta (1 + |\rho|) \leq 2$.</p> 
+<p>gives a surface that is completely free of static arbitrage provided that $\eta\ (1 + |\rho|) \leq 2$.</p> 
 
 <h4>7.5.3. Adding Flexibility: The $\alpha_t$ Shift</h4>
 
@@ -624,6 +660,8 @@
 
 <p>[3] provides a fast and robust algorithm for extracting implied volatility from option prices.</p>
 
+<p>The calibration method is the following:</p>
+
 <p>1. For $i = 1, \dots, N$ compute the total implied variance: $w^{\text{mkt}}_i(k_i, t_i) = \sigma^2_{BS}(k_i, t_i) \cdot t_i$</p>
 
 <p>2. Extract the sorted set of unique maturities: $\{\tau_1, \tau_2, \dots, \tau_T\}$.</p>
@@ -636,9 +674,11 @@
 
 <p>Note that $\theta$ is of length $T$ and $\theta^{\text{expanded}}$ is of length $N$.</p>
 
-<p>5. $\min_{\rho, \eta, \gamma} \sum_{i=1}^N \left( w_i^{\text{mkt}} - w^{\text{model}}(k_i, \theta^{\text{expanded}}_i, \rho, \eta, \gamma) \right)^2 + \lambda \cdot \max\left(0, \; \eta(1 + |\rho|) - 2\right)^2$</p>
+<p>5. $\min_{\rho, \eta, \gamma} \sum_{i=1}^N \left( w_i^{\text{mkt}} - w^{\text{model}}(k_i, \theta^{\text{expanded}}_i, \rho, \eta, \gamma) \right)^2 + W \cdot \max\left(0, \; \eta(1 + |\rho|) - 2\right)^2$</p>
 
-<p>The quadratic penalty term (with $\lambda = 10^8$) enforces the no-arbitrage condition: $\eta \, (1 + |\rho|) \leq 2$. This penalty is zero when the condition is satisfied and strictly positive otherwise.</p>
+<p>such that $\eta > 0$, $0 < \gamma  < 0.5$, and $-1 < \rho < 1$.</p>
+
+<p>The quadratic penalty term (with $W = 10^8$) enforces the no-arbitrage condition: $\eta \, (1 + |\rho|) \leq 2$. This penalty is zero when the condition is satisfied and strictly positive otherwise.</p>
 
 <p>$$w^{\text{model}}(k; \theta, \rho, \eta, \gamma) = \frac{\theta}{2} \left(1 + \rho \, \varphi(\theta) \, k + \sqrt{(\varphi(\theta) \, k + \rho)^2 + (1 - \rho^2)} \right)$$</p>
 
@@ -646,21 +686,21 @@
 
 <p>$$\varphi(\theta) = \frac{\eta}{\theta^\gamma \, (1 + \theta)^{1 - \gamma}}$$</p>
 
-<p>Other $\varphi(\theta)$ parameterizations can be used (e.g., Heston), but the no-arbitrage penalty will have to be changed accordingly.</p>
+<p>Other $\varphi(\theta)$ parameterizations can be used, but the no-arbitrage penalty will have to be changed accordingly. For Heston we need $\lambda > 0$ and the no-arbitrage condition $\lambda \ge (1 + |\rho|)/4$.</p>
 
 <p>6. For $i = 1, \dots, T$, we derive the initial jump-wing parameters:</p>
 
-<p>$\quad\quad$ $v_t = \frac{\theta_t}{\tau_t}$</p>
+<p style="padding-left: 2em">$v_t = \frac{\theta_t}{\tau_t}$</p>
 
-<p>$\quad\quad$ $\psi_t = \frac{1}{2} \, \rho \, \sqrt{\theta_t} \, \varphi(\theta_t)$</p>
+<p style="padding-left: 2em">$\psi_t = \frac{1}{2} \, \rho \, \sqrt{\theta_t} \, \varphi(\theta_t)$</p>
 
-<p>$\quad\quad$ $p_t = \frac{1}{2} \, \sqrt{\theta_t} \, \varphi(\theta_t) \, (1 - \rho)$</p>
+<p style="padding-left: 2em">$p_t = \frac{1}{2} \, \sqrt{\theta_t} \, \varphi(\theta_t) \, (1 - \rho)$</p>
 
 <p>We may guarantee a smile with no butterfly arbitrage by choosing:</p>
 
-<p>$\quad\quad$ $c_t = p_t + 2 \psi_t$</p>
+<p style="padding-left: 2em">$c_t = p_t + 2 \psi_t$</p>
 
-<p>$\quad\quad$ $\tilde{v_t} = v_t\ \frac{4\ p_t c_t}{(p_t + c_t)^2}$</p>
+<p style="padding-left: 2em">$\tilde{v_t} = v_t\ \frac{4\ p_t c_t}{(p_t + c_t)^2}$</p>
 
 <p>To ensure stable parameter evolution across maturities, we can fit independent cubic smoothing splines to each parameter.</p>
 
@@ -668,13 +708,13 @@
 
 <p>For each maturity $\tau_t$ in $\{\tau_1, \tau_2, \dots, \tau_T\}$:</p>
 
-<p>$\quad\quad$ 1. Apply the closed-form mapping from jump-wing $(v_t, \psi_t, p_t, c_t, \tilde{v_t})$ to raw parameters $(a_t, \, b_t, \, m_t, \, \rho_t, \, \sigma_t)$.</p>
+<p style="padding-left: 2em">1. Apply the closed-form mapping from jump-wing $(v_t, \psi_t, p_t, c_t, \tilde{v_t})$ to raw parameters $(a_t, \, b_t, \, m_t, \, \rho_t, \, \sigma_t)$.</p>
 
-<p>$\quad\quad$ 2. For each moneyness point $k_j$ in $\{k_1, k_2, \dots, k_K\}$ compute the model total variance:</p>
+<p style="padding-left: 2em">2. For each moneyness point $k_j$ in $\{k_1, k_2, \dots, k_K\}$ compute the model total variance:</p>
 
 <p>$$w^{\text{model}}(k_j, \tau_t) = a_t + b_t \left( \rho_t (k_j - m_t) + \sqrt{(k_j - m_t)^2 + \sigma_t^2} \right)$$</p>
 
-<p>$\quad\quad$ 3. For each moneyness point $k_j$ convert total variance back to implied volatility:</p>
+<p style="padding-left: 2em">3. For each moneyness point $k_j$ convert total variance back to implied volatility:</p>
 
 <p>$$\sigma_{model}(k_j, \tau_t) = \sqrt{ \frac{w^{\text{model}}(k_j, \tau_t)}{\tau_t}}$$</p>
 

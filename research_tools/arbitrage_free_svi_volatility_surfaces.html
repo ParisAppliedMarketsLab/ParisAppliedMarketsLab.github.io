@@ -652,13 +652,33 @@
 
 <p>which remains free of static arbitrage provided the last slice itself is free of butterfly arbitrage.</p>
 
+<h3>7.7. The extended SSVI volatility surface</h3>
+
+<p>One key limitation of the standard SSVI surface is its assumption that the correlation parameter $\rho$ remains constant across all maturities. The extended SSVI (eSSVI) [3] relaxes this assumption by allowing $\rho$ to depend on maturity, or equivalently, on $\theta_t$:</p>
+
+<p>$$w(k, \theta_t) = \frac{\theta_t}{2} \left( 1 + \rho(\theta_t) \varphi(\theta_t) k + \sqrt{ (\varphi(\theta_t) k + \rho(\theta_t))^2 + (1 - \rho(\theta_t)^2) } \right)$$</p>
+
+<p>Here, the fixed parameter $\rho$ is replaced by a maturity-dependent function $\rho: \mathbb{R}^{*}_{+} \mapsto (-1,1)$.</p>
+
+<p>Because $\rho$ governs the skew, this extension typically improves calibration accuracy for short maturities and may also offer greater robustness under stressed market conditions. That said, implementing eSSVI efficiently while rigorously precluding arbitrage is considerably more challenging.</p>
+
+<p>Consequently, if the primary objective is to achieve a precise fit for short-term expiries, the SABR (stochastic alpha beta rho) model often remains a more practical and effective choice:</p>
+
+<p>$$dS_t\ = \sigma_t\ S_t^{\beta}\ dZ_1$$</p>
+
+<p>$$d\sigma_t\ = \chi\ \sigma_t\ dZ_2$$</p>
+
+<p>$$\langle dZ_1, dZ_2 \rangle = \rho\ dt$$</p>
+
+<p>Volatility does not mean revert in the SABR model, so it is only good for short expirations. Nevertheless the model has the virtue of having an exact expression for the implied volatility smile in the short-expiration limit $\tau \mapsto 0$.</p>
+
 <h2>8. Algorithms</h2>
 
 <h3>8.1. Surface calibration</h3>
 
 <p>For $i = 1, \dots, N$ (data points) we have the implied volatility $\sigma_{BS}(k_i, t_i)$, the corresponding log-moneyness $k_i$ and maturity $t_i$.</p>
 
-<p>[3] provides a fast and robust algorithm for extracting implied volatility from option prices.</p>
+<p>[4] provides a fast and robust algorithm for extracting implied volatility from option prices.</p>
 
 <p>The calibration method is the following:</p>
 
@@ -676,7 +696,7 @@
 
 <p>5. $\min_{\rho, \eta, \gamma} \sum_{i=1}^N \left( w_i^{\text{mkt}} - w^{\text{model}}(k_i, \theta^{\text{expanded}}_i, \rho, \eta, \gamma) \right)^2 + W \cdot \max\left(0, \; \eta(1 + |\rho|) - 2\right)^2$</p>
 
-<p>such that $\eta > 0$, $0 < \gamma  < 0.5$, and $-1 < \rho < 1$.</p>
+<p>such that $\eta > 0$, $0 < \gamma  < 1$, and $-1 < \rho < 1$.</p>
 
 <p>The quadratic penalty term (with $W = 10^8$) enforces the no-arbitrage condition: $\eta \, (1 + |\rho|) \leq 2$. This penalty is zero when the condition is satisfied and strictly positive otherwise.</p>
 
@@ -726,7 +746,9 @@
 
 <p><a href="https://arxiv.org/abs/1204.0646">[2] Gatheral, J. and Jacquier, A. (2012), "Arbitrage-free SVI volatility surfaces".</a></p>
 
-<p><a href="http://www.jaeckel.org/LetsBeRational.pdf">[3] Jäckel, P. (2016). "Let's Be Rational".</a></p>
+<p><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2971502">[3] Hendriks, S. and Martini, C. (2017), "The Extended SSVI Volatility Surface".</a></p>
+
+<p><a href="http://www.jaeckel.org/LetsBeRational.pdf">[4] Jäckel, P. (2016). "Let's Be Rational".</a></p>
 
 </main>
 

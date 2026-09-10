@@ -53,7 +53,7 @@
 
 <p>Because options are intrinsically forward-looking instruments, they act as a rich source of information about the market's general expectations.</p>
 
-<p>While an options chain provides numerous metrics, we choose to focus specifically on the volatility surface. We treat implied volatility as a direct proxy for the market's aggregate view of future uncertainty.</p>
+<p>While an options chain provides numerous metrics, we choose to focus specifically on the volatility surface. We treat implied volatility as a direct proxy for the market's aggregate view of future uncertainty (in the absence of any supply-demand imbalance in the market).</p>
 
 <p>It is important to state upfront that our goal is not to judge whether these views are "correct" or to exploit arbitrage opportunities. Instead, our objective is to describe the surface in a mathematically rigorous, arbitrage-free manner, and to track its evolution over time.</p>
 
@@ -328,7 +328,7 @@
 
 <p>$$\frac{\partial v_{BS}}{\partial k}\big|_{k=0} = \rho\ b(\sigma) - 2\ \mu_J \quad \text{as } t \to 0$$</p>
 
-<p style="padding-left: 2em">Stochastic vol without jumps : $\frac{\partial v_{BS}}{\partial k}\big|_{k=0} \mapsto - \frac{\rho\ b(\sigma)}{2 \sigma}$.</p>
+<p style="padding-left: 2em">Stochastic vol without jumps : $\frac{\partial v_{BS}}{\partial k}\big|_{k=0} \mapsto \frac{\rho\ b(\sigma)}{2 \sigma}$.</p>
 
 <p style="padding-left: 2em">Deterministic vol with jumps: $\frac{\partial v_{BS}}{\partial k}\big|_{k=0} \mapsto - \frac{\mu_J}{\sigma}$.</p>
 
@@ -694,19 +694,9 @@
 
 <p>Note that $\theta$ is of length $T$ and $\theta^{\text{expanded}}$ is of length $N$.</p>
 
-<p>5. $\min_{\rho, \eta, \gamma} \sum_{i=1}^N \left( w_i^{\text{mkt}} - w^{\text{model}}(k_i, \theta^{\text{expanded}}_i, \rho, \eta, \gamma) \right)^2 + W \cdot \max\left(0, \; \eta(1 + |\rho|) - 2\right)^2$</p>
+<p>5. $\min_{\rho, \eta, \gamma}\ \mathcal{L}(\rho, \eta, \gamma) = \sum_{i=1}^N \nu_i\ \text{RMSE}(r_i) + W \cdot \max\left(0, \; \eta(1 + |\rho|) - 2\right)^2$ such that $\eta > 0$, $0 < \gamma  < 1$, and $-1 < \rho < 1$.</p>
 
-<p>such that $\eta > 0$, $0 < \gamma  < 1$, and $-1 < \rho < 1$.</p>
-
-<p>The quadratic penalty term (with $W = 10^8$) enforces the no-arbitrage condition: $\eta \, (1 + |\rho|) \leq 2$. This penalty is zero when the condition is satisfied and strictly positive otherwise.</p>
-
-<p>$$w^{\text{model}}(k; \theta, \rho, \eta, \gamma) = \frac{\theta}{2} \left(1 + \rho \, \varphi(\theta) \, k + \sqrt{(\varphi(\theta) \, k + \rho)^2 + (1 - \rho^2)} \right)$$</p>
-
-<p>where the $\varphi(\theta)$ function (power-law) is defined as:</p>
-
-<p>$$\varphi(\theta) = \frac{\eta}{\theta^\gamma \, (1 + \theta)^{1 - \gamma}}$$</p>
-
-<p>Other $\varphi(\theta)$ parameterizations can be used, but the no-arbitrage penalty will have to be changed accordingly. For Heston we need $\lambda > 0$ and the no-arbitrage condition $\lambda \ge (1 + |\rho|)/4$.</p>
+<p>The loss function and its components are described in detail in the Loss Function section below.</p>
 
 <p>6. For $i = 1, \dots, T$, we derive the initial jump-wing parameters:</p>
 
@@ -724,7 +714,51 @@
 
 <p>To ensure stable parameter evolution across maturities, we can fit independent cubic smoothing splines to each parameter.</p>
 
-<h3>8.2. Surface reconstruction (slice by slice)</h3>
+<h3>8.2. Loss function</h3>
+
+<p>Stepping back, our objective of fitting a volatility surface is to extract a reliable proxy for market consensus. Consequently, the weighting scheme must reflect informational quality. Heavily traded options exhibit tighter bid-ask spreads (lower uncertainty) and should therefore be prioritized, whereas illiquid points with wide spreads should be downweighted.</p>
+
+<p>ATM options are not only the most liquid but also carry the highest vega. Since the mapping between price and volatility is non-linear and explicitly contingent on vega, a vega-weighted objective serves a dual purpose. It inherently captures liquidity concentration while ensuring the fit remains consistent with actual pricing sensitivity.</p>
+
+<p>Wing quotes remain indispensable for defining skew, curvature, and tail steepness. However, they should not be allowed to dictate the fit when their informational content is low relative to their uncertainty. In unweighted cases, they often exert outsized leverage, as minor parameter perturbations can shift wing volatilities substantially.</p>
+
+<p>$$\text{Vega}=\frac{\partial C}{\partial \sigma} = S\sqrt{T}\,\phi(d_1), \qquad  \phi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}, \qquad d_1 =\frac{\ln(S/K)+(r-q+\tfrac12\sigma^2)T}{\sigma\sqrt{T}}$$</p>
+
+<p>Therefore:</p>
+
+<p>$$\text{Vega} = \frac{S\sqrt{T}}{\sqrt{2\pi}} \exp\!\left[ -\frac{\left(\ln(S/K)+(r-q+\tfrac12\sigma^2)T\right)^2}{2\sigma^2 T} \right]$$</p>
+
+<p>So, for fixed $S,\sigma,r,q$ and using \(k=\ln(K/F)\) with \(F=S e^{(r-q)T}\):</p>
+
+<p>$$\text{Vega}\propto \sqrt{T}\, \exp\!\left[-\frac{\left(-k+\tfrac12\sigma^2 T\right)^2}{2\sigma^2 T}\right]$$</p>
+
+<p>Strictly speaking, we cannot express Vega using only $k$ and $T$, it also depends on volatility \(\sigma\), and through \(S\) on the underlying level. Setting \(\sigma=1\) and ignoring the drift and the variance shift, we get a simplified vega-shaped weight:</p>
+
+<p>$$\nu(k, T) = \sqrt{T}\,\exp\!\left[-\frac{k^2}{2\ T}\right]$$</p>
+
+<div class="grid">
+    <img src="./ssvi/plot/vega_weight_plot.png" alt="vega shaped weight - Varying T">
+</div>
+
+<p>By adopting vega-aware weighting combined with root mean square loss, the calibration recenters on the liquid core, producing a fitting driven by reliable market data rather than distorted by noisy outliers. Empirically, we found it advantageous to set $T = 1$.</p>
+
+<p>$$\mathcal{L}(\rho, \eta, \gamma) = \sum_{i=1}^N \nu_i\ \text{RMSE}(r_i) + W \cdot \max\left(0, \; \eta(1 + |\rho|) - 2\right)^2$$</p>
+
+<p>$$r_i = w_i^{\text{mkt}} - w^{\text{model}}(k_i, \theta^{\text{expanded}}_i, \rho, \eta, \gamma) $$</p>
+
+<p>$$w^{\text{model}}(k; \theta, \rho, \eta, \gamma) = \frac{\theta}{2} \left(1 + \rho \, \varphi(\theta) \, k + \sqrt{(\varphi(\theta) \, k + \rho)^2 + (1 - \rho^2)} \right)$$</p>
+
+<p>where the $\varphi(\theta)$ function (power-law) is defined as:</p>
+
+<p>$$\varphi(\theta) = \frac{\eta}{\theta^\gamma \, (1 + \theta)^{1 - \gamma}}$$</p>
+
+<p>The quadratic penalty term (with $W = 10^8$) enforces the no-arbitrage condition: $\eta \, (1 + |\rho|) \leq 2$. This penalty is zero when the condition is satisfied and strictly positive otherwise.</p>
+
+<p>We minimise this loss function using L-BFGS-B. The initial parameter sets are generated through uniform sampling over the feasible domain, ensuring that all bound restrictions and no-arbitrage conditions are simultaneously satisfied.</p>
+
+<p>Other $\varphi(\theta)$ parameterizations can be used, but the no-arbitrage penalty will have to be changed accordingly. For Heston we need $\lambda > 0$ and the no-arbitrage condition $\lambda \ge (1 + |\rho|)/4$.</p>
+
+<h3>8.3. Surface reconstruction (slice by slice)</h3>
 
 <p>For each maturity $\tau_t$ in $\{\tau_1, \tau_2, \dots, \tau_T\}$:</p>
 

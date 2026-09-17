@@ -354,13 +354,110 @@
 
 <p>Given these trade-offs, the SVJ model represents the most adapted framework for our objective. It captures the necessary short-dated skew via jumps, maintains the consistent dynamics via stochastic volatility, and remains computationally tractable for calibration and dynamic tracking.</p>
 
-<h2>7. Building an Arbitrage-Free SVI Volatility Surface</h2>
+<h2>7. Skew, Smile, Term Structure and Volatility Regimes</h2>
+
+<h3>7.1. Short-Dated IV and Term-Structure Dynamics</h3>
+
+<p>Because realised volatility mean-reverts after a spike and a short-dated option covers only a fraction of the horizon of a long-dated one, front-end IV is far more volatile than back-end IV.</p>
+
+<p>This is also why short-dated skew is steeper. For a given spot move, short-dated IV and the term structure reprice more, and the more the term structure shifts for a given spot move, the steeper the skew.</p>
+
+<p>Inverted term structures are usually steeper, but since upward-sloping curves are more common, the average term structure is slightly upward sloping.</p>
+
+<p>Skew and term structure are correlated because both tend to rise when implied volatility falls. A drop in near-dated ATM IV lifts the curve and steepens the skew, since low-strike and long-dated IV are sticky.</p>
+
+<p>Finally, near-dated IV is highly correlated with realised volatility because when the two diverge materially long/short gamma positions will be started to arbitrage it.</p>
+
+<h3>7.2. The Sign and Drivers of Skew</h3>
+
+<p>The sign of skew is driven by $\rho$ and in equities, skew is generally negative.</p>
+
+<p>Large spot moves are more often down than up: positive catalysts tend to be anticipated, while bad news arrives as a surprise.</p>
+
+<p>Rising volatility is typically associated with falling equity markets, and falling volatility with calm markets.</p>
+
+<p>Skew is also reinforced by structural demand for downside protection and call overwriting.</p>
+
+<p>A negative skew implies an upward-sloping term structure at high strikes and a downward-sloping one at low strikes.</p>
+
+<p>That said, skew is not a reliable standalone risk indicator. It can be inversely correlated with ATM (itself a cleaner risk gauge) : falling volatility can steepen the skew below 100% while flattening the rest of the surface.</p>
+
+<p>To measure skew, we use strike skew (90%-110%) or delta skew (25-delta put - 25-delta call) / (50-delta call).</p>
+
+<h3>7.3. Idealised Volatility-Surface Regimes</h3>
+
+<p>Four idealised surface regimes:</p>
+
+<p style="padding-left: 2em">Sticky delta: IV is constant by moneyness; ATM stays put. Positive spot-vol correlation. Most typical over long horizons or trending markets.</p>
+
+<p style="padding-left: 2em">Sticky strike: IV is fixed by absolute strike. Zero spot-vol correlation.</p>
+
+<p style="padding-left: 2em">Sticky local vol: negative spot-vol correlation.</p>
+
+<p style="padding-left: 2em">Jumpy vol: very high spot-vol correlation; the surface moves more than sticky local vol implies. Usually short-lived, typical of panic or post-crash regimes.</p>
+
+<h3>7.4. The Four Moments of the Volatility Surface</h3>
+
+<table>
+    <tr>
+        <td><p>Moment</p></td>
+        <td><p>Name</p></td>
+        <td><p>Decay/movement over time</p></td>
+        <td><p>Maturity where surface dominate</p></td>
+        <td><p>Long position</p></td>
+        <td><p>Greek</p></td>
+        <td><p>Driver of PnL</p></td>
+    </tr>
+    <tr>
+        <td><p>1</p></td>
+        <td><p>Forward</p></td>
+        <td><p>Random walk</p></td>
+        <td><p>N/A</p></td>
+        <td><p>Futures</p></td>
+        <td><p>Delta</p></td>
+        <td><p>Price</p></td>
+    </tr>
+    <tr>
+        <td><p>2</p></td>
+        <td><p>Variance</p></td>
+        <td><p>Mean revert</p></td>
+        <td><p>Far dated</p></td>
+        <td><p>ATM options</p></td>
+        <td><p>Vega</p></td>
+        <td><p>IV</p></td>
+    </tr>
+    <tr>
+        <td><p>3</p></td>
+        <td><p>Skew</p></td>
+        <td><p>Decay square root</p></td>
+        <td><p>Medium date</p></td>
+        <td><p>Risk reversal (long OTM put - short OTM call)</p></td>
+        <td><p>Vanna (dVega/dSpot)</p></td>
+        <td><p>Skew</p></td>
+    </tr>
+    <tr>
+        <td><p>4</p></td>
+        <td><p>Kurtosis</p></td>
+        <td><p>Decay by time</p></td>
+        <td><p>Short date</p></td>
+        <td><p>Butterfly (long wing)</p></td>
+        <td><p>Volga (dVega/dVolatility)</p></td>
+        <td><p>Vol of Vol</p></td>
+    </tr>
+
+</table>
+
+<p>Skew can be thought of as the effect of changing volatility as spot moves while smile can be thought of as the effect of jumps (up or down).</p>
+
+<p>We can see that the shape of the smirk (skew + smile) depends on maturity. Smile decays with maturity by dividing by time, so it is most important for near-dated options. For medium and long-dated options, skew will dominate, as it decays by dividing by the square root of time.</p>
+
+<h2>8. Building an Arbitrage-Free SVI Volatility Surface</h2>
 
 <p>In this section, we implement the SSVI (Surface SVI) framework introduced by Gatheral and Jacquier [2]. 
 
 <p>We will start by exploring the foundational SVI formulations to understand their strengths, then motivate why we graduate to the full Surface SVI. Finally, we will cover practical interpolation, extrapolation, and calibration methodologies.
 
-<h3>7.1. Calendar Spread Arbitrage</h3>
+<h3>8.1. Calendar Spread Arbitrage</h3>
 
 <p>The first rule of a consistent (arbitrage-free) surface is that a longer-dated option must be worth more than a shorter-dated option, all else being equal.</p> 
 
@@ -372,7 +469,7 @@
 
 <p>$$\partial_{t} w(k, t) \geq 0 \quad \text{ for all k} \in \mathbb{R} \text{ and } t > 0$$</p>
 
-<h3>7.2. Butterfly Arbitrage</h3>
+<h3>8.2. Butterfly Arbitrage</h3>
 
 <p>The second rule ensures the existence of a non-negative risk-neutral probability density function $p$ for the future stock price, corresponding to call prices being decreasing and convex functions of the strike.</p>
 
@@ -400,7 +497,7 @@
 
 <p>A surface is free of butterfly arbitrage if and only if all the slices are free of butterfly arbitrage.</p>
 
-<h3>7.3. The Raw SVI Parameterization</h3>
+<h3>8.3. The Raw SVI Parameterization</h3>
 
 <p>What is important to note is that the surface can be thought as a collection of slices. The raw SVI model provides a flexible, closed-form expression for the total implied variance of a single slice.</p> 
 
@@ -448,7 +545,7 @@
 
 <p>Their strong interdependencies allow one parameter to compensate for another, resulting in unstable, hopping estimates across calibrations.</p>
 
-<h3>7.4. The SVI Jump-Wings (SVI-JW) Parameterization</h3>
+<h3>8.4. The SVI Jump-Wings (SVI-JW) Parameterization</h3>
 
 <p>To address the calibration instability of the raw parameters, we introduce the SVI-JW formulation. Instead of using parameters like $a, b, \rho, m, \sigma$, we re-parameterize the slice in terms of quantities observed at-the-money.</p>
 
@@ -494,7 +591,7 @@
 
 <p>If $m = 0$, then the formula above for $b\ \rho$  and $a$ still hold, but $\sigma = (v_t.t - a)/b$.</p>
 
-<h3>7.5. Surface SVI (SSVI):</h3>
+<h3>8.5. Surface SVI (SSVI):</h3>
 
 <p>For the raw SVI formulation, $g(k)$ is highly non-linear and finding general parameter constraints that guarantee $g(k) \geq 0$ everywhere is practically impossible.</p> 
 
@@ -542,7 +639,7 @@
 
 <p>$\phi_0 = 0$ is characteristic of stochastic volatility models (as in Heston-Like Parameterization). $\phi_0 > 0$ (as in Power-Law Parameterization) gives a V-shaped time zero smile which is characteristic of models with jumps and in particular, characteristic of empirically observed volatility surfaces. </p>
 
-<h4>7.5.1. No-Arbitrage Conditions for SSVI</h4>
+<h4>8.5.1. No-Arbitrage Conditions for SSVI</h4>
 
 <p>We can derive explicit conditions on the function $\varphi(\theta)$ to guarantee no arbitrage.</p>
 
@@ -570,7 +667,7 @@
 
 <p>$$\sqrt{v_t t} \max (p_t, c_t) < 2 \text{, and } (p_t + c_t) \max (p_t + c_t) \leq 2 \text{ for all } t > 0.</2>$$</p>
 
-<h4>7.5.2. Choosing the Function $\varphi(\theta)$</h4>
+<h4>8.5.2. Choosing the Function $\varphi(\theta)$</h4>
 
 <p>To satisfy all these conditions, we need a specific form for $\varphi$. Two popular choices are:</p>
 
@@ -616,7 +713,7 @@
 
 <p>gives a surface that is completely free of static arbitrage provided that $\eta\ (1 + |\rho|) \leq 2$.</p> 
 
-<h4>7.5.3. Adding Flexibility: The $\alpha_t$ Shift</h4>
+<h4>8.5.3. Adding Flexibility: The $\alpha_t$ Shift</h4>
 
 <p>We can expand the SSVI class further by adding a non-negative, increasing function of time $\alpha_t$:</p>
 
@@ -624,11 +721,11 @@
 
 <p>This shifted surface remains completely free of static arbitrage. This extra degree of freedom allows us to match three features (level, skew, and curvature) of one specific smile, while still maintaining the ability to match two features (level and skew) of all other smiles (subject to those smiles being inherently arbitrage-free).</p>
 
-<h3>7.6. Interpolation and Extrapolation Across Maturities</h3>
+<h3>8.6. Interpolation and Extrapolation Across Maturities</h3>
 
 <p>In practice, we only observe option prices at a finite set of maturities (e.g., 1 month, 3 months, 1 year). We must construct a continuous surface to price options at any arbitrary date.</p> 
 
-<h4>7.6.1. Interpolation (Between Maturities)</h4>
+<h4>8.6.1. Interpolation (Between Maturities)</h4>
 
 <p>Suppose we have two arbitrage-free slices $w(k, t_1)$ and $w(k, t_2)$ with $t_1 < t_2$, and we have verified $w(k, t_2) \geq w(k, t_1)$ to avoid calendar arbitrage. We can construct an interpolated surface for any intermediate $\tau \in (t_1, t_2)$ by linearly interpolating the normalized option prices.</p>
 
@@ -642,7 +739,7 @@
 
 <p>Once the interpolated call price is obtained, we can invert the Black-Scholes formula to recover the implied volatility at that intermediate maturity. This method preserves the no-arbitrage property across maturities.</p>
 
-<h4>7.6.2. Extrapolation (Beyond the First and Last Maturities)</h4>
+<h4>8.6.2. Extrapolation (Beyond the First and Last Maturities)</h4>
 
 <p>Before the first slice ($t < t_1$): At $t_0 = 0$, the option price is simply its intrinsic value. We can interpolate between $t_0 = 0$ and the first traded maturity $t_1$ using the same square-root time scheme.</p>
 
@@ -652,7 +749,7 @@
 
 <p>which remains free of static arbitrage provided the last slice itself is free of butterfly arbitrage.</p>
 
-<h3>7.7. The extended SSVI volatility surface</h3>
+<h3>8.7. The extended SSVI volatility surface</h3>
 
 <p>One key limitation of the standard SSVI surface is its assumption that the correlation parameter $\rho$ remains constant across all maturities. The extended SSVI (eSSVI) [3] relaxes this assumption by allowing $\rho$ to depend on maturity, or equivalently, on $\theta_t$:</p>
 
@@ -674,9 +771,9 @@
 
 <p>Although debatable, one alternative for achieving short-term fitting with reversion would be to use SSVI only on short and medium-term data.</p>
 
-<h2>8. Algorithms</h2>
+<h2>9. Algorithms</h2>
 
-<h3>8.1. Surface calibration</h3>
+<h3>9.1. Surface calibration</h3>
 
 <p>For $i = 1, \dots, N$ (data points) we have the implied volatility $\sigma_{BS}(k_i, t_i)$, the corresponding log-moneyness $k_i$ and maturity $t_i$.</p>
 
@@ -716,7 +813,7 @@
 
 <p style="padding-left: 2em">$\tilde{v_t} = v_t\ \frac{4\ p_t c_t}{(p_t + c_t)^2}$</p>
 
-<h3>8.2. Loss function</h3>
+<h3>9.2. Loss function</h3>
 
 <p>Stepping back, our objective of fitting a volatility surface is to extract a reliable proxy for market consensus. Consequently, the weighting scheme must reflect informational quality. Heavily traded options exhibit tighter bid-ask spreads (lower uncertainty) and should therefore be prioritized, whereas illiquid points with wide spreads should be downweighted.</p>
 
@@ -762,7 +859,7 @@
 
 <p>Other $\varphi(\theta)$ parameterizations can be used, but the no-arbitrage penalty will have to be changed accordingly. For Heston we need $\lambda > 0$ and the no-arbitrage condition $\lambda \ge (1 + |\rho|)/4$.</p>
 
-<h3>8.3. Surface reconstruction (slice by slice)</h3>
+<h3>9.3. Surface reconstruction (slice by slice)</h3>
 
 <p>For each maturity $\tau_t$ in $\{\tau_1, \tau_2, \dots, \tau_T\}$:</p>
 
@@ -778,7 +875,7 @@
 
 <p>Aggregate all the slices to obtain the full surface.</p>
 
-<h2>9. References</h2>
+<h2>10. References</h2>
 
 <p><a href="https://www.amazon.com/Volatility-Surface-Practitioners-Guide/dp/0471792519/ref=sr_1_1?crid=QMA1ZCMU9XES&dib=eyJ2IjoiMSJ9.nsn6ERlRtNzH0kAJRh0ISdX2wqyHkPNvCSXSdj4-Jw9XC7pqDyJYzMWkmsZn_KdruMIbH_ZZ95lN2zIe359295a_RY5Z3Y_j0ihaaoS83madCgbpt46FnB36hlb5g18pFvLXlSjywTD_2hpXnNvE3g.NI7yKtAa155bh8CAXzDCCOAppIqb6ggyI84r8bcDGuw&dib_tag=se&keywords=volatility+surface+practitioner&qid=1787678454&sprefix=volatiltiy+surface+practionner%2Caps%2C226&sr=8-1">[1] Gatheral, J. (2006), "The Volatility Surface: A Practitioner's Guide".</a></p>
 

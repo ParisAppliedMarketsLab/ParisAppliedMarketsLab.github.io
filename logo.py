@@ -5,7 +5,7 @@ img = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
 draw = ImageDraw.Draw(img)
 
 cell = 180
-gap = 12
+gap = 25
 grid_size = 3 * cell + 2 * gap
 x0 = (SIZE - grid_size) // 2
 y0 = (SIZE - grid_size) // 2

@@ -14,7 +14,7 @@ y0 = (SIZE - grid_size) // 2
 BORDER = (35, 35, 35, 255)
 
 BORDER_WIDTH = 0
-CORNER_RADIUS = 50
+CORNER_RADIUS = 60
 
 A = "#60B345" 
 B = "#B0C223" 

@@ -4,6 +4,16 @@
    BASE & RESET
    ============================================ */
 
+
+.logo {
+  display: flex;
+  align-items: center;   /* vertical centering */
+  height: 6em;
+  width: auto;
+  display: block;
+ 
+}
+
 .grid {
     display: flex;
     flex-wrap: wrap;
@@ -120,6 +130,7 @@ header nav a:hover {
    ============================================ */
 
 h1 {
+
   font-weight: 400;
   margin: 3rem 0;
   font-size: 3.2rem;

@@ -5,7 +5,7 @@ img = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
 draw = ImageDraw.Draw(img)
 
 cell = 180
-gap = 25
+gap = 30
 grid_size = 3 * cell + 2 * gap
 x0 = (SIZE - grid_size) // 2
 y0 = (SIZE - grid_size) // 2
@@ -26,7 +26,7 @@ G = "#6F2C91"
 H = "#3868BB"
 I = "#00A4E4" 
 
-colors = [(I, 0,0), (H, 0,1), (F, 0,2), (C, 1,0), (E, 1,1), (G, 1,2),(D, 2,0), (B, 2,1), (A,2,2)]
+colors = [(I,0,0), (H,0,1), (F,0,2), (C,1,0), (E,1,1), (G,1,2),(D,2,0), (B,2,1), (A,2,2)]
 
 for color, i, j in colors:
 

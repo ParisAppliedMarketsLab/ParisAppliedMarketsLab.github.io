@@ -14,17 +14,17 @@ y0 = (SIZE - grid_size) // 2
 BORDER = (35, 35, 35, 255)
 
 BORDER_WIDTH = 3
-CORNER_RADIUS = 35
+CORNER_RADIUS = 40
 
-A = "#60B345"
+A = "#60B345" 
 B = "#B0C223" 
 C = "#FFD100"
-D = "#F47920"
-E = "#E23838"
+D = "#F47920" 
+E = "#E23838" 
 F = "#A93265" 
 G = "#6F2C91" 
 H = "#3868BB"
-I = "#00A4E4"
+I = "#00A4E4" 
 
 colors = [(I, 0,0), (H, 0,1), (F, 0,2), (C, 1,0), (E, 1,1), (G, 1,2),(D, 2,0), (B, 2,1), (A,2,2)]
 

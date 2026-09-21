@@ -5,13 +5,26 @@
    ============================================ */
 
 
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 1.5rem 0;
+}
+
+/* Inline logo inside the h1 */
+.logo-inline {
+    width: 3em;      /* adjust to taste */
+    height: 3em;
+    flex-shrink: 0;   /* prevents logo from squishing */
+    display: block;
+}
+
+/* Optional: nav logo sizing */
 .logo {
-  display: flex;
-  align-items: center;   /* vertical centering */
-  height: 6em;
-  width: auto;
-  display: block;
- 
+    width: 8em;
+    height: 8em;
+    display: block;
 }
 
 .grid {
@@ -113,6 +126,7 @@ header nav div {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+
 }
 
 header nav a {

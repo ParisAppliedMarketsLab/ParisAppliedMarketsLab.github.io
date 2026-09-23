@@ -29,9 +29,6 @@ def raw_svi(k, a, b, rho, m, sigma):
     """Raw SVI: w(k) = a + b * (rho * (k - m) + sqrt((k - m)^2 + sigma^2))"""
     return a + b * (rho * (k - m) + np.sqrt((k - m)**2 + sigma**2))
 
-def vega_weight(x, T):
-    return np.sqrt(T) * np.exp(- np.square(x) / (2*T))
-
 if __name__ == "__main__":
 
     # varying 'a' (Minimum variance / vertical level)
@@ -98,16 +95,3 @@ if __name__ == "__main__":
         ylabel="Total Implied Variance w(k)",
         saving_path="./svi_sigma_plot.png"
     )
-
-    # varying 'T' for vega shaped weight
-    plot_varying_parameter(
-            func=vega_weight,
-            x_range=(-5.0, 5.0),
-            param_name="T",
-            param_values=[0.01, 0.1, 0.3, 0.5, 0.8],
-            fixed_params={"T":1},
-            title="vega shaped weight - Varying T",
-            xlabel="log-moneyness k = ln(K/F)",
-            ylabel="Weight",
-            saving_path="./vega_weight_plot.png"
-        )

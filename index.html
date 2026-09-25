@@ -78,7 +78,7 @@
             
         <p>This is the identification problem where multiple parameter sets produce the same distribution of observations and why we adopt a structural rather than a purely statistical approach. The difference between what a statistical model can recover from data and what actually generates the observations is the identification gap.</p>
 
-        <p>Consider two structural models. In Model $A$, Agent $1$ drives factor $1$ and Agent $2$ drives factor $2$. In Model $B$, Agent $1$ drives factor $2$ and Agent $2$ drives factor $1$. Both models produce the same covariance matrix. PCA cannot distinguish them, it returns the same eigenvectors for both. Yet the two models imply different futures. The eigenvectors are artifacts of the covariance matrix, not mechanisms. This is the identification gap.</p>
+        <p>Consider two structural models. In Model $A$, Agent $1$ drives factor $1$ and Agent $2$ drives factor $2$. In Model $B$, the roles are swapped. If the two factors are uncorrelated and have equal variance both models produce the same covariance matrix. PCA cannot distinguish them, it returns the same eigenvectors for both. Yet the two models imply different futures. The eigenvectors are artifacts of the covariance matrix, not mechanisms. This is the identification gap.</p>
             
         <p>This gap cannot be closed by more complex learning algorithms. It can only be closed by additional information from market mechanics and structural invariants, which are what we aim to add to $c_t$.</p>
 

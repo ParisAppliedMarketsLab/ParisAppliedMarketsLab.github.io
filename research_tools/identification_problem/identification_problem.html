@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research & Tools</title>
+
+    <link rel="stylesheet" href="../../style.css">
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ],
+                displayMath: [
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async>
+    </script>
+
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="../../index.html">Home</a>
+            <div>
+                <a href="../../research_tools.html">Research & Tools</a>
+                <a href="../../resources.html">Resources</a>  
+            </div>
+        </nav>
+                
+    </header>
+
+    <main>
+        <h1 class="page-title">
+        <a href="../../index.html"><img src="../../logo.png" alt="" class="logo-inline"></a>
+        <span>Identification problem</span>
+    </h1>
+        <hr class="black-line">
+        
+<h2>1. Introduction</h2>
+
+<p>The identification gap is the difference between what a statistical model can recover from data and what actually generates the observations.</p>
+
+<p>Formally, a parameter $\theta$ is identified if the mapping from $\theta$ to the distribution of observables $P(X; \theta)$ is injective: if $P(X; \theta_1) = P(X; \theta_2)$ implies $\theta_1 = \theta_2$. This fails when multiple parameter sets produce the same distribution and the model is under-identified. The data alone cannot tell them apart.</p>
+
+<p>This gap is not a limitation of any particular method. It is a property of the data, the covariance matrix does not contain enough information to identify the structural model. Both PCA and OLS are reduced-form methods. They describe the data, not the mechanism that generated it. Neither can close the gap without additional information.</p>
+    
+<table>
+    <tr>
+        <td><p>Method</p></td>
+        <td><p>What it uses</p></td>
+        <td><p>What it identifies</p></td>
+        <td><p>What it cannot identify</p></td>
+    </tr>
+    <tr>
+        <td><p>PCA</p></td>
+        <td><p>$\operatorname{Cov}(X)$</p></td>
+        <td><p>Directions of maximum variance</p></td>
+        <td><p>The structural mechanism behind the variance</p></td>
+    </tr>
+    <tr>
+        <td><p>OLS</p></td>
+        <td><p>$\operatorname{Cov}(X, y)$</p></td>
+        <td><p>Best linear predictor of $y$ given $X$</p></td>
+        <td><p>The structural coefficients when regressors are collinear</p></td>
+    </tr>
+
+</table>
+
+<h2>2. PCA</h2>
+
+<p>Consider two structural models with two agents and two latent factors $F_1, F_2$ (uncorrelated, equal variance $\sigma^2$)</p>
+
+<p>$$\text{Model A:} \quad o_1 = a F_1, \quad o_2 = b F_2, \quad \operatorname{Var}(o_1) = a^2 \sigma^2, \quad \operatorname{Var}(o_2) = b^2 \sigma^2, \quad \operatorname{Cov}(o_1, o_2) = 0$$</p>
+
+<p>$$\text{Model B:} \quad o_1 = a F_2, \quad o_2 = b F_1, \quad \operatorname{Var}(o_1) = a^2 \sigma^2, \quad \operatorname{Var}(o_2) = b^2 \sigma^2, \quad \operatorname{Cov}(o_1, o_2) = 0$$</p>
+
+<p>Both models produce the same covariance matrix</p>
+
+<p>$$\Sigma = \begin{pmatrix} a^2 \sigma^2 & 0 \\ 0 & b^2 \sigma^2 \end{pmatrix}$$</p>
+
+<p>PCA on $\Sigma$ returns the same eigenvectors $(1,0)^\top$ and $(0,1)^\top$ in both models. The statistical components are identical.</p>
+
+<p>It means that the PCA eigenvectors (the factors) are artifacts of the covariance matrix, not mechanisms. They may be mixtures of multiple structural components, or they may be statistical noise. The data cannot tell us which.</p>
+
+<p>Now suppose a future quantity depends only on factor $F_1$</p>
+
+<p>$$R = F_1 + \varepsilon$$</p>
+
+<p>$$\text{Model A:} \quad o_1 = a F_1, \quad \text{so $R$ is correlated with $o_1$}.$$</p>
+
+<p>$$\text{Model B:} \quad o_2 = b F_1, \quad  \text{so $R$ is correlated with $o_2$}.$$</p>
+
+<p>Regressing $R$ on $(o_1, o_2)$ gives completely different coefficients</p>
+
+<table>
+    <tr>
+        <td><p></p></td>
+        <td><p>Coefficient on $o_1$</p></td>
+        <td><p>Coefficient on $o_2$</p></td>
+    </tr>
+    <tr>
+        <td><p>Model A</p></td>
+        <td><p>Positive</p></td>
+        <td><p>Near zero</p></td>
+        
+    </tr>
+    <tr>
+        <td><p>Model B</p></td>
+        <td><p>Near zero</p></td>
+        <td><p>Positive</p></td>
+  
+    </tr>
+
+</table>
+    
+<p>Same covariance matrix. Same PCA eigenvectors. Different predictive relationships. This is the identification gap.</p>
+
+<h2>3. OLS</h2>
+
+<p>Consider the true mode:</p>
+
+<p>$$y = \beta_1 x_1 + \beta_2 x_2 + \varepsilon$$</p>
+
+<p>If $x_1$ and $x_2$ are perfectly collinear ($x_2 = 2 x_1$), then $\operatorname{rank}(X) = 1 < 2 = k$. The rank condition fails. OLS cannot identify $\beta_1$ and $\beta_2$ separately. Only the combination $1 = \beta_1 + 2\beta_2$ is identified. The following two models produce identical predictions:</p>
+
+<p>$$\text{Model A:} \quad \beta_1 = 1, \; \beta_2 = 0$$</p>
+
+<p>$$\text{Model B:} \quad \beta_1 = 0, \; \beta_2 = 0.5$$</p>
+
+<p>In both cases, $\hat{y} = x_1$. The data cannot distinguish them. This is the same gap as in the PCA example, multiple parameter sets produce the same distribution of observations.</p>
+
+</main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const placeholder = document.getElementById('header-placeholder');
+            fetch('./header.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    placeholder.innerHTML = data;
+                })
+                .catch(error => {
+                    console.warn('Header not loaded (./header.html missing).', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>
